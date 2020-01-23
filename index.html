@@ -1,9 +1,27 @@
 <html>
+
 <head>
     <script src="dist/bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+
 <body>
-    <h1>Demo</h1>
-    <button type="button" onclick="manawallib.CallMeIfYouCan()">Press me</button>
+    <img src="https://www.google.co.th/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
+    <h1>Demo v6.1 Reload with Google Image</h1>
+    <h2 id="SrunOn"></h2>
+    <p id="Sdata">data</p>
+    
+    <script>
+        var mcontentId = "financial-menu";
+        var lib;
+
+        $(document).ready(async function () {
+            lib = await manawallib.GetLib();
+            await lib.initPageApi(mcontentId);
+            var result = await lib.getApiData(mcontentId);
+            $("#Sdata").text(JSON.stringify(result));
+        });
+    </script>
 </body>
+
 </html>

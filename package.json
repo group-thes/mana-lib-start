@@ -28,6 +28,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "axios": "^0.19.1",
     "lodash": "^4.17.15"
   }
 }

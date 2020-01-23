@@ -1,7 +1,12 @@
 const path = require('path');
 
+const webpack = require('webpack');
+
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/ManaWallib.ts',
+  plugins: [new webpack.ProvidePlugin({
+    The$: './theSjquery.js'
+  })],
   module: {
     rules: [
       {
@@ -12,7 +17,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
     filename: 'bundle.js',
