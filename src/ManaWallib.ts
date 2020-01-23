@@ -7,7 +7,8 @@ document.head.appendChild(scriptForMana);
 
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
 
-declare var The$: any;
+export declare var The$: any;
+(<any>window).The$G = The$;
 
 var browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
 var manaUrl = "https://jsonplaceholder.typicode.com/todos/1";
@@ -69,7 +70,7 @@ function hideContent() {
         var style = document.createElement("style");
         style.setAttribute("id", "app-hide-content");
         style.type = "text/css";
-        var css = "#app-form-submit {display: none;} ion-header:not(.home-header) {display: none;}";
+        var css = "#app-form-submit {display: none;} ion-header:not(.home-header) {display: none;} nav {display:none !important;}";
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
     }
