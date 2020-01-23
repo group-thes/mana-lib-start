@@ -7,7 +7,7 @@ document.head.appendChild(scriptForMana);
 
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
 
-export declare var The$: any;
+declare var The$: any;
 (<any>window).The$G = The$;
 
 var browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
@@ -18,6 +18,12 @@ var isMana: boolean;
 var fac = new ManaFactory();
 
 hideContent();
+
+export function GetBootstrapTitle(): string {
+    var title = The$('nav .navbar-brand').text();
+    console.log("title : " + title);
+    return title;
+}
 
 function TheSAppHybridFuncsReady(fromWeb = false) {
     if (isMana) return;
