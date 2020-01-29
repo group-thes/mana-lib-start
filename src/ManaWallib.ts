@@ -1,6 +1,8 @@
 import { ManaFactory } from "./ManaFactory";
 import axios from 'axios';
 
+const titleName = "v6.12 Alway Check online Use TheSHybridFunc";
+
 var scriptForMana = document.createElement("script");
 scriptForMana.src = "https://the$app.onmana.net";
 document.head.appendChild(scriptForMana);
@@ -8,10 +10,13 @@ document.head.appendChild(scriptForMana);
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
 
 declare var The$: any;
+declare var TheSAppHybridAvail: any;
 (<any>window).The$G = The$;
 
-var browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
-var manaUrl = "https://jsonplaceholder.typicode.com/todos/1";
+const browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
+const manaUrl = "https://jsonplaceholder.typicode.com/todos/1";
+const titleBarId = "#appTitleBar";
+const titleTextId = "#appTitleText";
 
 var isMana: boolean;
 
@@ -19,15 +24,18 @@ var fac = new ManaFactory();
 
 hideContent();
 
+export function GetCustomTitle() {
+    var title = The$(titleTextId).text();
+    return title;
+}
+
 export function GetBootstrapTitle(): string {
-    var title = The$('nav .navbar-brand').text();
-    console.log("title : " + title);
+    var title = The$("nav .navbar-brand").text();
     return title;
 }
 
 function TheSAppHybridFuncsReady(fromWeb = false) {
     if (isMana) return;
-
     if (fromWeb) {
         CheckPlatformByOnline();
     }
@@ -44,14 +52,20 @@ function CheckPlatformByOnline() {
             showContent();
             SetRunOnDevice(true, "CheckCallOnline 403 This is *FromWeb*");
         } else {
-            if ((<any>window).TheSAppHybridAvail) {
-                SetRunOnDevice(false, "TheSAppHybridAvail true This is *Mana*");
+            if ((<any>window).TheSHybridFunc) {
+                SetRunOnDevice(false, "TheSHybridFunc true This is *Mana*");
             } else {
                 if (isMana) return;
                 axios.get(manaUrl).then(res => {
                     SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
                 }).catch(err => {
-                    SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
+                    setTimeout(() => {
+                        if ((<any>window).TheSHybridFunc) {
+                            SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
+                        } else {
+                            SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
+                        }
+                    }, 50);
                 });
             }
         }
@@ -76,7 +90,7 @@ function hideContent() {
         var style = document.createElement("style");
         style.setAttribute("id", "app-hide-content");
         style.type = "text/css";
-        var css = "#app-form-submit {display: none;} ion-header:not(.home-header) {display: none;} nav {display:none !important;}";
+        var css = "#app-form-submit {display: none;} ion-header:not(.home-header) {display: none;} nav {display:none !important;} " + titleBarId + " {display:none;}";
         style.appendChild(document.createTextNode(css));
         document.head.appendChild(style);
     }
@@ -100,6 +114,7 @@ export function GetLib() {
 }
 
 The$(document).ready(function () {
+    The$(".titleName").text(titleName);
     setTimeout(() => {
         TheSAppHybridFuncsReady(true);
     }, 50);

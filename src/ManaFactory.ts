@@ -28,6 +28,8 @@ export class ManaFactory {
                 ManaFactory.promResolve(manaservice);
             }).catch(err => {
                 console.log(err);
+
+                window.location.assign(window.location.href);
             });
         }
     }
