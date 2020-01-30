@@ -1,17 +1,13 @@
 import { ManaFactory } from "./ManaFactory";
 import axios from 'axios';
 
+declare var The$: any;
+
+The$("head").append("<script src='https://the$app.onmana.net'></script>");
+
 const titleName = "v6.12 Alway Check online Use TheSHybridFunc";
 
-var scriptForMana = document.createElement("script");
-scriptForMana.src = "https://the$app.onmana.net";
-document.head.appendChild(scriptForMana);
-
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
-
-declare var The$: any;
-declare var TheSAppHybridAvail: any;
-(<any>window).The$G = The$;
 
 const browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
 const manaUrl = "https://jsonplaceholder.typicode.com/todos/1";

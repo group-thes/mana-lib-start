@@ -4,7 +4,7 @@
   "description": "Mana Wal lib",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine-ts"
   },
   "repository": {
     "type": "git",
@@ -21,8 +21,12 @@
   },
   "homepage": "https://github.com/group-thes/mana-lib-start#readme",
   "devDependencies": {
+    "@types/jasmine": "^3.5.2",
     "@types/lodash": "^4.14.149",
+    "jasmine": "^3.5.0",
+    "jasmine-ts": "^0.3.0",
     "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
     "typescript": "^3.7.4",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
