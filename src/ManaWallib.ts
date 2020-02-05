@@ -1,22 +1,21 @@
-import { ManaFactory } from "./ManaFactory";
-import axios from 'axios';
+import axios from "axios";
+import { ManaWallibFunc } from "./ManaWallibFunc";
 
 declare var The$: any;
 
-The$("head").append("<script src='https://the$app.onmana.net'></script>");
+AddTheS();
 
+function AddTheS() {
+    The$("head").append("<script src='https://the$app.onmana.net'></script>");
+}
 const titleName = "v6.12 Alway Check online Use TheSHybridFunc";
 
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
 
-const browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
-const manaUrl = "https://jsonplaceholder.typicode.com/todos/1";
 const titleBarId = "#appTitleBar";
 const titleTextId = "#appTitleText";
 
-var isMana: boolean;
-
-var fac = new ManaFactory();
+var func = new ManaWallibFunc();
 
 hideContent();
 
@@ -31,7 +30,7 @@ export function GetBootstrapTitle(): string {
 }
 
 function TheSAppHybridFuncsReady(fromWeb = false) {
-    if (isMana) return;
+    if (func.runningOnMana) return;
     if (fromWeb) {
         CheckPlatformByOnline();
     }
@@ -40,42 +39,61 @@ function TheSAppHybridFuncsReady(fromWeb = false) {
     }
 }
 
-function CheckPlatformByOnline() {
-    if (isMana) return;
-    axios.get(browserUrl).catch(err => {
-        console.log(JSON.stringify(err));
-        if (err.response && err.response.status == "403") {
-            showContent();
-            SetRunOnDevice(true, "CheckCallOnline 403 This is *FromWeb*");
-        } else {
+async function CheckPlatformByOnline() {
+    var statusCode = await func.CheckPlatformByOnline();
+
+    if (statusCode.browserCode == null && statusCode.manaCode == null) {
+        return;
+    } else if (statusCode.browserCode == "403" && statusCode.manaCode == null) {
+        showContent();
+        SetRunOnDevice(true, "CheckCallOnline 403 This is *FromWeb*");
+    }
+    else if (statusCode.browserCode == "0" && statusCode.manaCode == null) {
+        SetRunOnDevice(false, "TheSHybridFunc true This is *Mana*");
+    }
+    else if (statusCode.browserCode == "0" && statusCode.manaCode == "200") {
+        SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
+    }
+    else if (statusCode.browserCode == "0" && statusCode.manaCode == "0") {
+        setTimeout(() => {
             if ((<any>window).TheSHybridFunc) {
-                SetRunOnDevice(false, "TheSHybridFunc true This is *Mana*");
+                SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
             } else {
-                if (isMana) return;
-                axios.get(manaUrl).then(res => {
-                    SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
-                }).catch(err => {
-                    setTimeout(() => {
-                        if ((<any>window).TheSHybridFunc) {
-                            SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
-                        } else {
-                            SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
-                        }
-                    }, 50);
-                });
+                SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
             }
-        }
-    });
+        }, 50);
+    }
+
+    // if (func.runningOnMana) return;
+    // axios.get(browserUrl).catch(err => {
+    //     console.log(JSON.stringify(err));
+    //     if (err.response && err.response.status == "403") {
+    //         showContent();
+    //         SetRunOnDevice(true, "CheckCallOnline 403 This is *FromWeb*");
+    //     } else {
+    //         if ((<any>window).TheSHybridFunc) {
+    //             SetRunOnDevice(false, "TheSHybridFunc true This is *Mana*");
+    //         } else {
+    //             if (func.runningOnMana) return;
+    //             axios.get(manaUrl).then(res => {
+    //                 SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
+    //             }).catch(err => {
+    //                 setTimeout(() => {
+    //                     if ((<any>window).TheSHybridFunc) {
+    //                         SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
+    //                     } else {
+    //                         SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
+    //                     }
+    //                 }, 50);
+    //             });
+    //         }
+    //     }
+    // });
 }
 
-function SetRunOnDevice(fromWeb: boolean, SetDeviceMsg: string) {
-    if (isMana == false && fromWeb == false) {
-        window.location.assign(window.location.href);
-        return;
-    };
-    if (isMana) return;
-    isMana = !fromWeb;
-    fac.SetRunOnDevice(fromWeb);
+//TODO: Use func.SetRunOnDevice instead this function
+function SetRunOnDevice(fromWeb: boolean, SetDeviceMsg: string = "") {
+    func.SetRunOnDevice(fromWeb);
     The$("#SrunOn").text(SetDeviceMsg);
 }
 
@@ -106,7 +124,7 @@ function showContent() {
 }
 
 export function GetLib() {
-    return fac.GetManaLib();
+    return func.GetLib();
 }
 
 The$(document).ready(function () {

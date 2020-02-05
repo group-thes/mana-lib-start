@@ -21,8 +21,6 @@ export class ManaNativeService implements ITheSManaLibProvider {
         (<any>window).OnSelectToolbar = (action: any) => { this.excuteToolbarItemFunc(action) };
 
         (<any>window).onOptionSelected = (response: any) => { return this.excuteOnOptionSelected(response) };
-
-        console.log('Hello ManaNativeService Provider');
     }
 
     initPageApi(mcontentid: string): Promise<any> {

@@ -32,7 +32,12 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "@types/jsdom": "^12.2.4",
+    "@types/moxios": "^0.4.9",
     "axios": "^0.19.1",
-    "lodash": "^4.17.15"
+    "jasmine-spec-reporter": "^4.2.1",
+    "jsdom": "^16.0.1",
+    "lodash": "^4.17.15",
+    "moxios": "^0.4.0"
   }
 }
