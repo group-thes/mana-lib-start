@@ -2,16 +2,19 @@ import { ITheSManaLibProvider } from "./ITheSManaLibProvider"
 import axios from 'axios';
 
 axios.interceptors.response.use(response => {
-    return response.data;
+    return response?.data;
 });
 
 export class ManaRestService implements ITheSManaLibProvider {
+    
+    getName(): string {
+        return "ManaRestService";
+    }
 
     private apiBase: string = "https://api-mana.azurewebsites.net";
     private apiUrls: Map<string, string> = new Map<string, string>();
 
     http: any;
-    constructor() { }
 
     initPageApi(mcontentid: string): Promise<any> {
         return new Promise<any>((resolver, rejector) => {
@@ -122,7 +125,6 @@ export class ManaRestService implements ITheSManaLibProvider {
     initOptionDialog(mcid: string, fn: (param: any) => any): Promise<any> {
         return new Promise<any>(() => { });
     }
-
 }
 
 interface InitPageAPI {

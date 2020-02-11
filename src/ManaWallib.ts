@@ -3,12 +3,11 @@ import { ManaWallibFunc } from "./ManaWallibFunc";
 
 declare var The$: any;
 
-AddTheS();
+var scriptForMana = document.createElement("script");
+scriptForMana.src = "https://the$app.onmana.net";
+document.head.appendChild(scriptForMana);
 
-function AddTheS() {
-    The$("head").append("<script src='https://the$app.onmana.net'></script>");
-}
-const titleName = "v6.12 Alway Check online Use TheSHybridFunc";
+const titleName = "v7.3 Unit test Func window";
 
 (<any>window).TheSAppHybridFuncsReady = TheSAppHybridFuncsReady;
 
@@ -30,7 +29,6 @@ export function GetBootstrapTitle(): string {
 }
 
 function TheSAppHybridFuncsReady(fromWeb = false) {
-    if (func.runningOnMana) return;
     if (fromWeb) {
         CheckPlatformByOnline();
     }
@@ -59,36 +57,11 @@ async function CheckPlatformByOnline() {
             if ((<any>window).TheSHybridFunc) {
                 SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
             } else {
+                alert("This is no Internet");
                 SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
             }
         }, 50);
     }
-
-    // if (func.runningOnMana) return;
-    // axios.get(browserUrl).catch(err => {
-    //     console.log(JSON.stringify(err));
-    //     if (err.response && err.response.status == "403") {
-    //         showContent();
-    //         SetRunOnDevice(true, "CheckCallOnline 403 This is *FromWeb*");
-    //     } else {
-    //         if ((<any>window).TheSHybridFunc) {
-    //             SetRunOnDevice(false, "TheSHybridFunc true This is *Mana*");
-    //         } else {
-    //             if (func.runningOnMana) return;
-    //             axios.get(manaUrl).then(res => {
-    //                 SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
-    //             }).catch(err => {
-    //                 setTimeout(() => {
-    //                     if ((<any>window).TheSHybridFunc) {
-    //                         SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
-    //                     } else {
-    //                         SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
-    //                     }
-    //                 }, 50);
-    //             });
-    //         }
-    //     }
-    // });
 }
 
 //TODO: Use func.SetRunOnDevice instead this function

@@ -38,6 +38,8 @@ export interface ITheSManaLibProvider {
     showOptionDialog(mcid: any, params: any): Promise<any>;
 
     initOptionDialog(mcid: string, fn: (param: any) => any): Promise<any>;
+
+    getName():string;
 }
 
 export class confirmMessage {

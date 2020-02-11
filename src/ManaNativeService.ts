@@ -4,6 +4,10 @@ declare function TheSHybridCall(methodName: string, parameter: any): void;
 declare function TheSHybridFunc(methodName: string, parameter: string, callback: any): void;
 
 export class ManaNativeService implements ITheSManaLibProvider {
+    
+    getName(): string {
+        return "ManaNativeService";
+    }
 
     private callBackFunc: () => void;
     private onStateChangedFunc: (param: any) => void;

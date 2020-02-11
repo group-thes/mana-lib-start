@@ -2,8 +2,6 @@ import { ITheSManaLibProvider } from "./ITheSManaLibProvider";
 import { ManaRestService } from "./ManaRestService";
 import { ManaNativeService } from "./ManaNativeService";
 
-declare function TheSHybridFunc(methodName: string, parameter: string, callback: any): void;
-
 export class ManaFactory {
     private static promResolve: any;
     private ILib: Promise<ITheSManaLibProvider>;
@@ -23,12 +21,13 @@ export class ManaFactory {
             var restservice = new ManaRestService();
             ManaFactory.promResolve(restservice);
         } else {
+            // var manaservice = new ManaNativeService();
+            // ManaFactory.promResolve(manaservice);
             this.getAppBridge().then(() => {
                 var manaservice = new ManaNativeService();
                 ManaFactory.promResolve(manaservice);
             }).catch(err => {
                 console.log(err);
-
                 window.location.assign(window.location.href);
             });
         }
@@ -40,7 +39,7 @@ export class ManaFactory {
 
     retryGetTheSHybridFunc(): Promise<any> {
         return new Promise((resolver, rejector) => {
-            if (typeof TheSHybridFunc == "undefined" || !TheSHybridFunc) {
+            if (typeof (<any>window).TheSHybridFunc == "undefined" || !((<any>window).TheSHybridFunc)) {
                 rejector("TheSHybridFunc is null or undefined");
             } else {
                 resolver();
