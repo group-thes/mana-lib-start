@@ -5,7 +5,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: './src/ManaWallib.ts',
   plugins: [new webpack.ProvidePlugin({
-    The$: './theSjquery.js'
+    The$: './theSjquery-slim.js'
   })],
   module: {
     rules: [
