@@ -12,6 +12,10 @@ export class ManaWallibFunc {
         this.axiosInstance = axiosInstance;
     }
 
+    private ReloadPage(){
+        window.location.assign(window.location.href);
+    };
+
     public GetLib() {
         return this.fac.GetManaLib();
     }
@@ -19,7 +23,7 @@ export class ManaWallibFunc {
     public SetRunOnDevice(fromWeb: boolean) {
         if (this.runningOnMana == true) return;
         if (this.runningOnMana == false && fromWeb == false) {
-            window.location.assign(window.location.href);
+            this.ReloadPage();
             return;
         };
         this.runningOnMana = !fromWeb;

@@ -53,11 +53,11 @@ async function CheckPlatformByOnline() {
         SetRunOnDevice(false, "CheckCallOnlineNLocal This is *Mana*");
     }
     else if (statusCode.browserCode == "0" && statusCode.manaCode == "0") {
+         //will show content ? if *No internet* add retry check TheSHybridFunc ?
         setTimeout(() => {
             if ((<any>window).TheSHybridFunc) {
                 SetRunOnDevice(false, "CheckCallOnlineNLocal with Retry This is *Mana*");
             } else {
-                alert("This is no Internet");
                 SetRunOnDevice(true, "CheckCallOnlineNLocal This is *No internet*");
             }
         }, 50);
@@ -106,3 +106,5 @@ The$(document).ready(function () {
         TheSAppHybridFuncsReady(true);
     }, 50);
 });
+
+export * from "./ManaWallib";

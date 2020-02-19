@@ -12,6 +12,10 @@ export class ManaFactory {
         });
     }
 
+    private ReloadPage(){
+        window.location.assign(window.location.href);
+    };
+
     public async GetManaLib(): Promise<ITheSManaLibProvider> {
         return this.ILib;
     }
@@ -28,7 +32,7 @@ export class ManaFactory {
                 ManaFactory.promResolve(manaservice);
             }).catch(err => {
                 console.log(err);
-                window.location.assign(window.location.href);
+                this.ReloadPage();
             });
         }
     }

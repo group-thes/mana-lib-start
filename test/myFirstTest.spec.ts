@@ -7,10 +7,18 @@ import { JSDOM } from 'jsdom';
 var browserUrl = "https://safebrowsing.googleapis.com/v4/threatLists";
 var manaUrl = "https://jsonplaceholder.typicode.com/todos/1";
 
-(<any>global).window = jasmine.createSpy();
+const dom = new JSDOM("<!DOCTYPE html><html><head><script src='../src/theSjquery-slim.js'></script></head></html>", {
+    url: "https://example.org/",
+    contentType: "text/html",
+});
+
+(<any>global).window = dom.window;
 
 describe("ManaFactory", () => {
-
+    afterEach(() => {
+        (<any>global).window.TheSHybridFunc = undefined;
+    });
+    
     it('When SetRunOnDevice with true then GetManaLib it should be ManaRestService', async () => {
         var fac = new ManaFactory();
         fac.SetRunOnDevice(true);
@@ -34,10 +42,9 @@ describe("ManaWallibFunc CheckPlatformByOnline", () => {
     beforeEach(() => {
         moxios.install(axiosInstance);
     });
-
     afterEach(() => {
         moxios.uninstall(axiosInstance);
-        (<any>global).window.TheSHybridFunc = false;
+        (<any>global).window.TheSHybridFunc = undefined;
     });
 
     it('When run on browser status code must be 403 and null', async () => {
@@ -104,6 +111,10 @@ describe("ManaWallibFunc CheckPlatformByOnline", () => {
 });
 
 describe("ManaWallibFunc SetRunOnDevice", () => {
+    afterEach(() => {
+        (<any>global).window.TheSHybridFunc = undefined;
+    });
+
     it('When set device run on Mana and set device run on browser again it device must be Mana', async () => {
         (<any>global).window.TheSHybridFunc = true;
         var manaFunc = new ManaWallibFunc();
@@ -114,14 +125,22 @@ describe("ManaWallibFunc SetRunOnDevice", () => {
         expect(result).toBe("ManaNativeService");
     })
 
-    it('When set device run on browser and set device run on Mana window.location.assign must be called', async () => {
-        JSDOM.fromFile("index.html").then(async dom => {
-            (<any>global).window.TheSHybridFunc = true;
-            var manaFunc = new ManaWallibFunc();
-            manaFunc.SetRunOnDevice(true);
-            manaFunc.SetRunOnDevice(false);
-            expect((<any>global).window.location.assign).toHaveBeenCalled();
-        });
+    it('When set device run on browser and set device run on Mana it must be call reload page', () => {
+        (<any>global).window.TheSHybridFunc = true;
+        var manaFunc = new ManaWallibFunc();
+        spyOn<any>(manaFunc, "ReloadPage");
+        manaFunc.SetRunOnDevice(true);
+        manaFunc.SetRunOnDevice(false);
+        expect((<any>manaFunc).ReloadPage).toHaveBeenCalledTimes(1);
     });
 
+    it('When set device run on Mana and set device run on Mana fac.SetRunOnDevice must call once time', () => {
+        (<any>global).window.TheSHybridFunc = true;
+        var manaFunc = new ManaWallibFunc();
+        spyOn<any>((<any>manaFunc).fac, "SetRunOnDevice");
+        manaFunc.SetRunOnDevice(false);
+        manaFunc.SetRunOnDevice(false);
+        expect((<any>manaFunc).fac.SetRunOnDevice).toHaveBeenCalledTimes(1);
+        
+    });
 });
