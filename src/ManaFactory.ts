@@ -25,8 +25,6 @@ export class ManaFactory {
             var restservice = new ManaRestService();
             ManaFactory.promResolve(restservice);
         } else {
-            // var manaservice = new ManaNativeService();
-            // ManaFactory.promResolve(manaservice);
             this.getAppBridge().then(() => {
                 var manaservice = new ManaNativeService();
                 ManaFactory.promResolve(manaservice);

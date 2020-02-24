@@ -64,7 +64,6 @@ async function CheckPlatformByOnline() {
     }
 }
 
-//TODO: Use func.SetRunOnDevice instead this function
 function SetRunOnDevice(fromWeb: boolean, SetDeviceMsg: string = "") {
     func.SetRunOnDevice(fromWeb);
     The$("#SrunOn").text(SetDeviceMsg);
@@ -106,5 +105,3 @@ The$(document).ready(function () {
         TheSAppHybridFuncsReady(true);
     }, 50);
 });
-
-export * from "./ManaWallib";
